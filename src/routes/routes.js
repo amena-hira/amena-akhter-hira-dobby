@@ -4,7 +4,7 @@ import Authentication from "../Pages/Authentication/Authentication";
 
 const routes = createBrowserRouter([
     {
-        path: '/',
+        path: '/home',
         element: <Home></Home>
     },
     {
@@ -12,7 +12,7 @@ const routes = createBrowserRouter([
         element: <Authentication></Authentication>
     },
     {
-        path: '/login',
+        path: '/',
         element: <Authentication></Authentication>
     }
 ])

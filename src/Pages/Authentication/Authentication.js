@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import background from '../../images/background.avif';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { AuthContext } from '../../context/AuthProvider';
 
 const Authentication = () => {
-    const {handleAuthUser} = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -30,11 +28,10 @@ const Authentication = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
                     if (data.acknowledged) {
                         form.reset();
                         toast.success("Successfully registered!! Please Login..")
-                        navigate('/login')
+                        navigate('/home')
                     }
                     else{
                         toast.error('Please give the right information...');
@@ -52,11 +49,9 @@ const Authentication = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
                     if (data.status) {
                         form.reset();
                         localStorage.setItem('token', data.token);
-                        handleAuthUser();
                         navigate('/');
                     }
                     else{
