@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import background from '../../images/background.avif';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { AuthContext } from '../../context/AuthProvider';
 
 const Authentication = () => {
-    const location = useLocation();
     const navigate = useNavigate();
+    const {token, setToken} = useContext(AuthContext);
+    if (token) {
+        navigate('/home');
+    }
+    const location = useLocation();
 
     const handleAuthentication = (event) => {
         event.preventDefault()
@@ -17,7 +22,7 @@ const Authentication = () => {
             email,
             password
         }
-        if (location.pathname !== '/login') {
+        if (location.pathname !== '/') {
             console.log("sign: ", user);
             fetch('http://localhost:5000/signup', {
                 method: 'POST',
@@ -28,14 +33,23 @@ const Authentication = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.acknowledged) {
-                        form.reset();
-                        toast.success("Successfully registered!! Please Login..")
-                        navigate('/home')
+                    console.log(data);
+                    if (data.status) {
+                        if (data.result.acknowledged) {
+                            form.reset();
+                            toast.success("Successfully registered!! Please Login..")
+                            navigate('/')
+                        }
+                        else{
+                            toast.error('Please give the right information...');
+                        }
                     }
                     else{
-                        toast.error('Please give the right information...');
+                        toast.error('This email exist! Please Login..', {
+                            icon: '👏',
+                          });
                     }
+
                 })
         }
         else {
@@ -52,9 +66,10 @@ const Authentication = () => {
                     if (data.status) {
                         form.reset();
                         localStorage.setItem('token', data.token);
-                        navigate('/');
+                        setToken(data.token);
+                        navigate('/home')
                     }
-                    else{
+                    else {
                         toast.error("Email/Password is incorrect!!");
                     }
                 })
@@ -70,7 +85,7 @@ const Authentication = () => {
                     <div className="max-w-xl">
                         <h1 className="mb-5 text-5xl font-semibold">
                             {
-                                location.pathname === '/login' ?
+                                location.pathname === '/' ?
                                     'Login'
                                     :
                                     'Sign Up'
@@ -94,7 +109,7 @@ const Authentication = () => {
                             </div>
                             <div className="form-control mt-6">
                                 <button className="btn btn-active rounded-full">{
-                                    location.pathname === '/login' ?
+                                    location.pathname === '/' ?
                                         'Login'
                                         :
                                         'Signup'
@@ -103,10 +118,10 @@ const Authentication = () => {
                         </form>
 
                         {
-                            location.pathname === '/login' ?
+                            location.pathname === '/' ?
                                 <p className='pt-5'>Don't have an account? <Link to='/signup' className='btn-link text-black hover:text-white'>Signup</Link></p>
                                 :
-                                <p className='pt-5'>Have an account? <Link to='/login' className='btn-link text-black hover:text-white'>Login</Link></p>
+                                <p className='pt-5'>Have an account? <Link to='/' className='btn-link text-black hover:text-white'>Login</Link></p>
                         }
                     </div>
                 </div>

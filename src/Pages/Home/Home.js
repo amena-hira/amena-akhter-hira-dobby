@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import ImageForm from './ImageForm';
 import ImageGallery from './ImageGallery';
+import { AuthContext } from '../../context/AuthProvider';
 
 const Home = () => {
     const [images, setImages] = useState([]);
+    const {token} = useContext(AuthContext);
     useEffect(() => {
-        fetch('http://localhost:5000/image')
+        fetch(`http://localhost:5000/image?token=${token}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
                 setImages(data);
             })
-    }, [])
+    }, [token])
     return (
         <>
             <div className='bg-sky-300'>

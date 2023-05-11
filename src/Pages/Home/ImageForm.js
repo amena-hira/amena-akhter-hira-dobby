@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../context/AuthProvider';
 
 const ImageForm = ({ setImages }) => {
+    const {token} = useContext(AuthContext);
     const [nameValue, setNameValue] = useState(false);
     const [imagesValue, setImagesValue] = useState(false);
     const handleUploadImage = (event) => {
@@ -12,18 +14,22 @@ const ImageForm = ({ setImages }) => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('image', image);
+        formData.append('token', token);
         fetch('http://localhost:5000/image', {
             method: 'POST',
             body: formData
         })
             .then(res => res.json())
             .then(data => {
-                fetch('http://localhost:5000/image')
+                console.log(data);
+                if (data.acknowledged) {
+                    fetch(`http://localhost:5000/image?token=${token}`)
                     .then(res => res.json())
                     .then(data => {
-                        console.log(data);
+                        console.log("data",data);
                         setImages(data);
                     })
+                }
             })
             .catch(error => console.log(error))
     }

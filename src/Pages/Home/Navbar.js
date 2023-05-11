@@ -1,17 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoMdLogIn } from 'react-icons/io';
 
 const Navbar = ({setImages}) => {
-    const { user, logout } = useContext(AuthContext);
-    const [searchValue, setSearchValue] = useState();
+    const { user, logout, token } = useContext(AuthContext);
     const navigate = useNavigate();
-
-    console.log(searchValue);
+    
     const handleSearch = (searchValue) => {
         console.log(searchValue);
-        fetch(`http://localhost:5000/image/${searchValue}`)
+        fetch(`http://localhost:5000/image/${searchValue}?token=${token}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
