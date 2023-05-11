@@ -1,11 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoMdLogIn } from 'react-icons/io';
 
-const Navbar = () => {
+const Navbar = ({setImages}) => {
     const { user, logout } = useContext(AuthContext);
+    const [searchValue, setSearchValue] = useState();
     const navigate = useNavigate();
+
+    console.log(searchValue);
+    const handleSearch = (searchValue) => {
+        console.log(searchValue);
+        fetch(`http://localhost:5000/image/${searchValue}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setImages(data)
+            })
+    }
     const handleLogout = () => {
         logout();
         navigate('/login');
@@ -16,12 +28,12 @@ const Navbar = () => {
                 <div className="navbar">
                     <div className="navbar-start">
                         <div className="dropdown">
-                            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+                            <label tabIndex={0} className="btn btn-ghost md:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                             </label>
                             <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-60">
                                 <div className="form-control">
-                                    <input type="text" placeholder="Search" className="input input-bordered" />
+                                    <input onChange={(e) => handleSearch(e.target.value)} type="text" placeholder="Search by name" className="input input-bordered" />
                                 </div>
                             </ul>
                         </div>
@@ -31,7 +43,7 @@ const Navbar = () => {
                     <div className="navbar-end">
                         <ul className="menu menu-horizontal px-1 gap-1">
                             <div className="form-control hidden md:flex">
-                                <input type="text" placeholder="Search" className="input input-bordered" />
+                                <input onChange={(e) => handleSearch(e.target.value)} type="text" placeholder="Search by name" className="input input-bordered" />
                             </div>
                             {
                                 user ?
