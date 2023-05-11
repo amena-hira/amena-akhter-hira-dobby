@@ -9,7 +9,7 @@ const Navbar = ({setImages}) => {
     
     const handleSearch = (searchValue) => {
         console.log(searchValue);
-        fetch(`http://localhost:5000/image/${searchValue}?token=${token}`)
+        fetch(`https://server-side-gold.vercel.app/image/${searchValue}?token=${token}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);

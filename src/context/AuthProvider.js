@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(()=>{
-        fetch('http://localhost:5000/authUser', {
+        fetch('https://server-side-gold.vercel.app/authUser', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

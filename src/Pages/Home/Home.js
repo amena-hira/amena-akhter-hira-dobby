@@ -8,7 +8,7 @@ const Home = () => {
     const [images, setImages] = useState([]);
     const {token} = useContext(AuthContext);
     useEffect(() => {
-        fetch(`http://localhost:5000/image?token=${token}`)
+        fetch(`https://server-side-gold.vercel.app/image?token=${token}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);

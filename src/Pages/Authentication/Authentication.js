@@ -24,7 +24,7 @@ const Authentication = () => {
         }
         if (location.pathname !== '/') {
             console.log("sign: ", user);
-            fetch('http://localhost:5000/signup', {
+            fetch('https://server-side-gold.vercel.app/signup', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -54,7 +54,7 @@ const Authentication = () => {
         }
         else {
             console.log("login: ", user);
-            fetch('http://localhost:5000/login', {
+            fetch('https://server-side-gold.vercel.app/login', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

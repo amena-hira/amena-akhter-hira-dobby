@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const ImageForm = ({ setImages }) => {
-    const {token} = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     const [nameValue, setNameValue] = useState(false);
     const [imagesValue, setImagesValue] = useState(false);
     const handleUploadImage = (event) => {
@@ -15,7 +16,7 @@ const ImageForm = ({ setImages }) => {
         formData.append('name', name);
         formData.append('image', image);
         formData.append('token', token);
-        fetch('http://localhost:5000/image', {
+        fetch('https://server-side-gold.vercel.app/image', {
             method: 'POST',
             body: formData
         })
@@ -23,12 +24,13 @@ const ImageForm = ({ setImages }) => {
             .then(data => {
                 console.log(data);
                 if (data.acknowledged) {
-                    fetch(`http://localhost:5000/image?token=${token}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log("data",data);
-                        setImages(data);
-                    })
+                    toast.success("Image added successfully to gallery.")
+                    fetch(`https://server-side-gold.vercel.app/image?token=${token}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("data", data);
+                            setImages(data);
+                        })
                 }
             })
             .catch(error => console.log(error))
